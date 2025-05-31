@@ -1,4 +1,6 @@
-package ma.enset.service;
+package ma.enset.service.reponse;
+import com.google.gson.JsonElement;
+
 
 public class StandardResponse {
 
@@ -17,4 +19,5 @@ public class StandardResponse {
     }
 
     // getters and setters
+
 }

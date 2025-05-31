@@ -2,17 +2,36 @@ package ma.enset.service;
 import jdk.jshell.spi.ExecutionControl;
 import java.util.Collection;
 
-public interface UserService {
+import java.util.*;
 
-    public void addUser (User user);
+public class UserService {
+    private Map<String, User> users = new HashMap<>();
 
-    public Collection<User> getUsers ();
-    public User getUser (String id);
+    public void addUser(User user) {
+        users.put(user.getId(), user);
+    }
 
-    public User editUser (User user)
-            throws ExecutionControl.UserException;
+    public Collection<User> getUsers() {
+        return users.values();
+    }
 
-    public void deleteUser (String id);
+    public User getUser(String id) {
+        return users.get(id);
+    }
 
-    public boolean userExist (String id);
+    public User editUser(User user) {
+        if (users.containsKey(user.getId())) {
+            users.put(user.getId(), user);
+            return user;
+        }
+        return null;
+    }
+
+    public void deleteUser(String id) {
+        users.remove(id);
+    }
+
+    public boolean userExist(String id) {
+        return users.containsKey(id);
+    }
 }

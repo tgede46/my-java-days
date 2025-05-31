@@ -3,6 +3,8 @@ package ma.enset.service;
 import static spark.Spark.options;
 import static spark.Spark.*;
 import com.google.gson.Gson;
+import ma.enset.service.reponse.StandardResponse;
+import ma.enset.service.UserService;
 
 public class SparkRestExample {
     public static void main(String[] args) {
@@ -12,22 +14,47 @@ public class SparkRestExample {
             userService.addUser(user);
 
             return new Gson()
-                    .toJson(new StandardResponse(StatusResponse.SUCCESS));
+                    .toJson(new StandardResponse(StandardResponse.StatusResponse.SUCCESS));
         });
         get("/users", (request, response) -> {
-            //...
+            response.type("application/json");
+            return new Gson().toJson(
+                    new StandardResponse(StandardResponse.StatusResponse.SUCCESS,new Gson()
+                            .toJsonTree(userService.getUsers())));
         });
         get("/users/:id", (request, response) -> {
-            //...
+            response.type("application/json");
+            return new Gson().toJson(
+                    new StandardResponse(StandardResponse.StatusResponse.SUCCESS,new Gson()
+                            .toJsonTree(userService.getUser(request.params(":id")))));
         });
         put("/users/:id", (request, response) -> {
-            //...
+            response.type("application/json");
+            User toEdit = new Gson().fromJson(request.body(), User.class);
+            User editedUser = userService.editUser(toEdit);
+
+            if (editedUser != null) {
+                return new Gson().toJson(
+                        new StandardResponse(StandardResponse.StatusResponse.SUCCESS,new Gson()
+                                .toJsonTree(editedUser)));
+            } else {
+                return new Gson().toJson(
+                        new StandardResponse(StandardResponse.StatusResponse.ERROR,new Gson()
+                                .toJson("User not found or error in edit")));
+            }
         });
         delete("/users/:id", (request, response) -> {
-            //...
+            response.type("application/json");
+            userService.deleteUser(request.params(":id"));
+            return new Gson().toJson(
+                    new StandardResponse(StandardResponse.StatusResponse.SUCCESS, "user deleted"));
         });
         options("/users/:id", (request, response) -> {
-            //...
+            response.type("application/json");
+            return new Gson().toJson(
+                    new StandardResponse(StandardResponse.StatusResponse.SUCCESS,
+                            (userService.userExist(
+                                    request.params(":id"))) ? "User exists" : "User does not exists" ));
         });
     }
 }
