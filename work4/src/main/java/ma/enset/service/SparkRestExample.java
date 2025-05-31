@@ -17,7 +17,7 @@ public class SparkRestExample {
 
         // Routes REST
 
-        // ➕ Ajouter un utilisateur
+        // Ajouter un utilisateur
         post("/users", (request, response) -> {
             response.type("application/json");
             User user = new Gson().fromJson(request.body(), User.class);
@@ -25,7 +25,7 @@ public class SparkRestExample {
             return new Gson().toJson(new StandardResponse(StatusResponse.SUCCESS, "User added"));
         });
 
-        // 📃 Obtenir tous les utilisateurs
+        //  Obtenir tous les utilisateurs
         get("/users", (request, response) -> {
             response.type("application/json");
             return new Gson().toJson(
@@ -34,7 +34,7 @@ public class SparkRestExample {
             );
         });
 
-        // 🔍 Obtenir un utilisateur par ID
+        // Obtenir un utilisateur par ID
         get("/users/:id", (request, response) -> {
             response.type("application/json");
             User user = userService.getUser(request.params(":id"));
@@ -50,7 +50,7 @@ public class SparkRestExample {
             }
         });
 
-        // ✏️ Modifier un utilisateur
+        // Modifier un utilisateur
         put("/users/:id", (request, response) -> {
             response.type("application/json");
             User toEdit = new Gson().fromJson(request.body(), User.class);
@@ -67,7 +67,7 @@ public class SparkRestExample {
             }
         });
 
-        // ❌ Supprimer un utilisateur
+        // Supprimer un utilisateur
         delete("/users/:id", (request, response) -> {
             response.type("application/json");
             userService.deleteUser(request.params(":id"));
@@ -76,7 +76,7 @@ public class SparkRestExample {
             );
         });
 
-        // ✅ Vérifier si un utilisateur existe (OPTIONS)
+        //  Vérifier si un utilisateur existe (OPTIONS)
         options("/users/:id", (request, response) -> {
             response.type("application/json");
             boolean exists = userService.userExist(request.params(":id"));
