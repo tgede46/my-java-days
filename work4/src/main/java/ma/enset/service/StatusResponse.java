@@ -6,4 +6,9 @@ public enum StatusResponse {
 
     private String status;
     // constructors, getters
+    StatusResponse(String status) {}
+
+    public String getStatus() {
+        return status;
+    }
 }
